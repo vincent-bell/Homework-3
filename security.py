@@ -3,16 +3,18 @@ from tkinter.messagebox import showwarning
 from validate_email import validate_email
 
 
+REMOTE_SERVER = 'https://wireauth-5d00b1d59903.herokuapp.com'
+
+
 # Post requests
-wireauth_try_login = lambda json: requests.post('http://127.0.0.1:5000/user/login', json=json).json()
-wireauth_try_register = lambda json: requests.post('http://127.0.0.1:5000/user/create',
+wireauth_try_login = lambda json: requests.post(f'{REMOTE_SERVER}/user/login', json=json).json()
+wireauth_try_register = lambda json: requests.post(f'{REMOTE_SERVER}/user/create',
                                                    json=json).json()
 # Get/Put requests
-wireauth_get_user_data = lambda username, headers: requests.get(f'http://127.0.0.1:5000/user/{username}',
+wireauth_get_user_data = lambda username, headers: requests.get(f'{REMOTE_SERVER}/user/{username}',
                                                                    headers=headers).json()
-wireauth_update_balance = lambda username, json, headers: requests.put(f'http://127.0.0.1:5000/user/{username}/balance',
+wireauth_update_balance = lambda username, json, headers: requests.put(f'{REMOTE_SERVER}/user/{username}/balance',
                                                                           json=json, headers=headers).json()
-
 
 def validate_credit_card_no(digits: str):
     for digit in digits:
