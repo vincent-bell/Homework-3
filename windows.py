@@ -1,4 +1,3 @@
-import os
 from tkinter import Tk, Toplevel, Canvas, PhotoImage, Button, Entry
 from io import BytesIO
 from typing import Tuple
@@ -33,7 +32,7 @@ class Window(Tk):
 
         # For drawing images
         self.images = []
-        self.__iidx = 0
+        self.iidx = 0
 
     @staticmethod
     def __load_image(path: str, width: int, height: int, format: str = 'png', *,
@@ -64,14 +63,14 @@ class Window(Tk):
         img, fmt = self.__load_image(path, self.width, self.height, 'png')
         image = PhotoImage(data=img, format=fmt)
         self.images.append(image)
-        self.canvas.create_image(position[0], position[1], image=self.images[self.__iidx])
-        self.__iidx += 1
+        self.canvas.create_image(position[0], position[1], image=self.images[self.iidx])
+        self.iidx += 1
 
     def draw_text(self, position: Tuple[int, int], text, *, font='TkDefaultFont 15',
                   font_colour='black'):
         """Draw text to the window using absolute position."""
-        self.canvas.create_text(position[0], position[1], text=text, font=font,
-                                fill=font_colour)
+        return self.canvas.create_text(position[0], position[1], text=text, font=font,
+                                       fill=font_colour)
 
     def draw_entry_box(self, position: Tuple[int, int], ebx_width: int, ebx_height: int):
         """Draw an entry box to the window using absolute position."""
@@ -85,10 +84,10 @@ class Window(Tk):
         img, fmt = self.__load_image(image_path, btn_width, btn_height, 'png')
         image = PhotoImage(data=img, format=fmt)
         self.images.append(image)
-        button = Button(self.canvas, image=self.images[self.__iidx], borderwidth=0,
+        button = Button(self.canvas, image=self.images[self.iidx], borderwidth=0,
                         highlightthickness=0, command=callback, relief='flat')
         button.place(x=position[0], y=position[1], width=btn_width, height=btn_height)
-        self.__iidx += 1
+        self.iidx += 1
         return button
 
     def show(self):
@@ -114,3 +113,6 @@ class WindowChild(Toplevel, Window):
         self.canvas = Canvas(master=self, width=self.width, height=self.height,
                              bd=0, highlightthickness=0, relief='ridge')
         self.canvas.pack()
+
+        self.images = []
+        self.iidx = 0
